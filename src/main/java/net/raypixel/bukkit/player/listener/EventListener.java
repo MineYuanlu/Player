@@ -56,7 +56,7 @@ public class EventListener implements Listener {
 		Player player = (Player) event.getWhoClicked();
 		Inventory i = event.getClickedInventory();
 		if (i != null) {
-			if (i.getTitle().contains("Profile")) {
+			if (i.getTitle().contains(Messages.getMessage(player, "PROFILE"))) {
 				event.setCancelled(true);
 				ItemStack item = event.getCurrentItem();
 				if (item != null && item.getItemMeta() != null) {
@@ -64,7 +64,7 @@ public class EventListener implements Listener {
 						player.openInventory(p.getInventory(player));
 					}
 					if (event.getSlot() == 3) {
-						Inventory age = Bukkit.createInventory(null, 54, "My Profile - Age");
+						Inventory age = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE") + " - " + Messages.getMessage(player, "AGE"));
 						p.setupInventory(player, age, DyeColor.RED);
 
 						ItemStack tens = p.getUnsetItem();
@@ -110,7 +110,7 @@ public class EventListener implements Listener {
 					}
 
 					if (event.getSlot() == 4) {
-						Inventory gender = Bukkit.createInventory(null, 54, "My Profile - Gender");
+						Inventory gender = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE") + " - " + Messages.getMessage(player, "GENDER"));
 						p.setupInventory(player, gender, DyeColor.RED);
 						if (ConfigManager.getData(player).getString("gender").equalsIgnoreCase("unset")) {
 							gender.setItem(29, p.getMaleItem(player));
@@ -163,7 +163,7 @@ public class EventListener implements Listener {
 					}
 
 					if (event.getSlot() == 5 && f != null) {
-						Inventory friendsInv = Bukkit.createInventory(null, 54, "My Profile - Friends");
+						Inventory friendsInv = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE") + " - " + Messages.getMessage(player, "FRIENDS"));
 						p.setupInventory(player, friendsInv, DyeColor.ORANGE);
 						List<String> list = f.getFriends(player.getUniqueId());
 						Main.logger.info(player.getUniqueId().toString() + " - " + list.toString());
@@ -244,7 +244,7 @@ public class EventListener implements Listener {
 				}
 			}
 
-			if (i.getTitle().contains("Age")) {
+			if (i.getTitle().contains(Messages.getMessage(player, "AGE"))) {
 				if ((event.getSlot() >= 31 && event.getSlot() <= 35)
 						|| (event.getSlot() >= 40 && event.getSlot() <= 44)) {
 					ItemStack item = event.getCurrentItem();
@@ -292,7 +292,7 @@ public class EventListener implements Listener {
 				}
 			}
 
-			if (i.getTitle().contains("Gender")) {
+			if (i.getTitle().contains(Messages.getMessage(player, "GENDER"))) {
 				if (ConfigManager.getData(player).getString("gender").equalsIgnoreCase("unset")) {
 					if (event.getSlot() == 29) {
 						if (event.getCurrentItem().getItemMeta().getDisplayName().contains(Messages.getMessage(player, "BE_SURE_TO_CHOOSE"))) {

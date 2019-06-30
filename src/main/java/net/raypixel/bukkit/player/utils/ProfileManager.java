@@ -59,13 +59,13 @@ public class ProfileManager implements CommandExecutor {
 	}
 
 	public Inventory getInventory(Player player) {
-		Inventory i = Bukkit.createInventory(null, 54, "My Profile");
+		Inventory i = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE"));
 		setupInventory(player, i, DyeColor.CYAN);
 		return i;
 	}
 
 	public Inventory getInventory(Player player, OfflinePlayer target) {
-		Inventory i = Bukkit.createInventory(null, 54, target.getName() + "'s Profile");
+		Inventory i = Bukkit.createInventory(null, 54, Messages.getMessage(player, "OTHERS_PROFILE").replace("%player%", target.getName()));
 		setupInventory(player, i, DyeColor.ORANGE);
 		i.setItem(22, SkullManager.getPersonalSkull(target));
 		return i;
@@ -75,7 +75,7 @@ public class ProfileManager implements CommandExecutor {
 		ItemStack age = SkullManager.getCustomSkull(
 				"http://textures.minecraft.net/texture/8ff88b122ff92513c6a27b7f67cb3fea97439e078821d6861b74332a2396");
 		ItemMeta ageMeta = age.getItemMeta();
-		ageMeta.setDisplayName(ChatColor.GREEN + "Age");
+		ageMeta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, "AGE"));
 		ageMeta.setLore(
 				Collections.singletonList(
 						ConfigManager.getData(player).getString("birth-year")
@@ -91,7 +91,7 @@ public class ProfileManager implements CommandExecutor {
 		ItemStack gender = SkullManager.getCustomSkull(
 				"http://textures.minecraft.net/texture/a1bfee8010c680a961bc83a25a54a5865b244b6d1cb7dc75b6219a93555296");
 		ItemMeta genderMeta = gender.getItemMeta();
-		genderMeta.setDisplayName(ChatColor.GREEN + "Gender");
+		genderMeta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, "GENDER"));
 		genderMeta.setLore(Collections.singletonList(ConfigManager.getData(player).getString("gender").equalsIgnoreCase("UNSET")
 				? Messages.getMessage(player, "GENDER_NOT_TOLD")
 				: (ConfigManager.getData(player).getString("gender").equalsIgnoreCase("male") ? Messages.getMessage(player, "MALE_LORE") : Messages.getMessage(player, "FEMALE_LORE"))));
@@ -99,22 +99,22 @@ public class ProfileManager implements CommandExecutor {
 		return gender;
 	}
 
-	private ItemStack getFriendItem() {
+	private ItemStack getFriendItem(OfflinePlayer player) {
 		ItemStack friend = SkullManager.getCustomSkull(
 				"http://textures.minecraft.net/texture/19592cad924d70a1f4af2738d4922e1abdc487dff68c0727d37ed9b2ab64071");
 		ItemMeta friendMeta = friend.getItemMeta();
-		friendMeta.setDisplayName(ChatColor.GREEN + "Friends");
+		friendMeta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, "FRIENDS"));
 		/* List<String> friendLore = new ArrayList<>(); TODO */
 		friendMeta.setLore(Collections.singletonList(ChatColor.GRAY + "This feature is coming soon!"));
 		friend.setItemMeta(friendMeta);
 		return friend;
 	}
 
-	private ItemStack getPartyItem() {
+	private ItemStack getPartyItem(OfflinePlayer player) {
 		ItemStack party = SkullManager.getCustomSkull(
 				"http://textures.minecraft.net/texture/345b2edd9ec69a350a867db0e5b0b87551aff498a88e01e2bd6a036ff4d39");
 		ItemMeta partyMeta = party.getItemMeta();
-		partyMeta.setDisplayName(ChatColor.GREEN + "Parties");
+		partyMeta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, "PARTIES"));
 		/* List<String> partyLore = new ArrayList<>(); TODO */
 		partyMeta.setLore(Collections.singletonList(ChatColor.GRAY + "This feature is coming soon!"));
 		party.setItemMeta(partyMeta);
@@ -142,8 +142,8 @@ public class ProfileManager implements CommandExecutor {
 		i.setItem(2, SkullManager.getPersonalSkull(p));
 		i.setItem(3, getAgeItem(p));
 		i.setItem(4, getGenderItem(p));
-		i.setItem(5, getFriendItem());
-		i.setItem(6, getPartyItem());
+		i.setItem(5, getFriendItem(p));
+		i.setItem(6, getPartyItem(p));
 		setGlassPanes(i, c);
 	}
 
@@ -151,7 +151,7 @@ public class ProfileManager implements CommandExecutor {
 		ItemStack male = SkullManager.getCustomSkull(
 				"http://textures.minecraft.net/texture/e7fe6e2316ca384e0c85261b14fc066e231d6127e540dfeddb8b54d911b82831");
 		ItemMeta maleMeta = male.getItemMeta();
-		maleMeta.setDisplayName(ChatColor.AQUA + "Male");
+		maleMeta.setDisplayName(ChatColor.AQUA + Messages.getMessage(player, "MALE"));
 		List<String> maleLore = new ArrayList<>();
 		maleLore.add(Messages.getMessage(player, "SELECT_IF_MALE"));
 		maleLore.add(Messages.getMessage(player, "ONCE_SET"));
@@ -164,7 +164,7 @@ public class ProfileManager implements CommandExecutor {
 		ItemStack female = SkullManager.getCustomSkull(
 				"http://textures.minecraft.net/texture/f6aac8c1c290be9d3bd495476aca42c68623b9cbefdd6ddbd6144855b9731c63");
 		ItemMeta femaleMeta = female.getItemMeta();
-		femaleMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "Female");
+		femaleMeta.setDisplayName(ChatColor.LIGHT_PURPLE + Messages.getMessage(player, "FEMALE"));
 		List<String> femaleLore = new ArrayList<>();
 		femaleLore.add(Messages.getMessage(player, "SELECT_IF_FEMALE"));
 		femaleLore.add(Messages.getMessage(player, "ONCE_SET"));

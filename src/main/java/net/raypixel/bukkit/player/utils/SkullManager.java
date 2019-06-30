@@ -3,6 +3,7 @@ package net.raypixel.bukkit.player.utils;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
+import net.raypixel.bukkit.player.Messages;
 import org.bukkit.ChatColor;
 import net.raypixel.bukkit.player.Main;
 import org.apache.commons.codec.binary.Base64;
@@ -25,15 +26,15 @@ public class SkullManager {
 		meta.setOwner(player.getName());
 		List<String> personalInfo = new ArrayList<>();
 		/* personalInfo.add(ChatColor.GRAY + "Raypixel Level: " + TODO ); */
-		personalInfo.add(ChatColor.GRAY + "Rank: " + RankManager.getDisplayRank(player));
-		personalInfo.add(ChatColor.GRAY + "Point: " + ChatColor.AQUA + ConfigManager.getData(player).getInt("point"));
+		personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "RANK") + ": " + RankManager.getDisplayRank(player));
+		personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "POINT") + ": " + ChatColor.AQUA + ConfigManager.getData(player).getInt("point"));
 		if (!ConfigManager.getData(player).getString("birth-year").equalsIgnoreCase("UNSET")) {
-			personalInfo.add(ChatColor.GRAY + "Age: " + ChatColor.AQUA + (Integer.valueOf(Main.getInstance().getCurrentFormattedDate("yyyy"))
+			personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "AGE") + ": " + ChatColor.AQUA + (Integer.valueOf(Main.getInstance().getCurrentFormattedDate("yyyy"))
 					- ConfigManager.getData(player).getInt("birth-year")));
 		}
 		if (!ConfigManager.getData(player).getString("gender").equalsIgnoreCase("UNSET")) {
 			String gender = ConfigManager.getData(player).getString("gender").toUpperCase();
-			personalInfo.add(ChatColor.GRAY + "Gender: " + (gender.equalsIgnoreCase("male") ? ChatColor.AQUA : ChatColor.LIGHT_PURPLE) + gender);
+			personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "GENDER") + ": " + (gender.equalsIgnoreCase("male") ? ChatColor.AQUA : ChatColor.LIGHT_PURPLE) + Messages.getMessage(player, gender));
 		}
 		meta.setLore(personalInfo);
 		person.setItemMeta(meta);
