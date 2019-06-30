@@ -1,0 +1,34 @@
+languages:
+  - en-GB
+  - en-US
+  - zh-CN
+update-language-files: true
+
+data-path: E:\Minecraft\Servers\Raypixel_Network\[10000-25565] Raypixel\PlayerData
+auto-detect: true
+mysql:
+  enable: false
+friends:
+  enable: true
+  debug: false
+  username: username
+  password: password
+  address: localhost
+  database: raypixel
+  timezone: CST
+  useSSL: false
+
+default:
+  name:
+  rank: MEMBER
+  language: en-US
+  gender: UNSET
+  birth-year: UNSET
+  point: 0
+  parkour-records:
+    lobby:
+    skywars:
+  skywars:
+    wins: 0
+    kills: 0
+    deaths: 0

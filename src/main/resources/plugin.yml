@@ -1,0 +1,18 @@
+main: net.raypixel.bukkit.player.Main
+name: RaypixelPlayer
+version: 1.0.0
+author: SiderRMC
+
+softdepend:
+  - RaypixelParkour
+
+commands:
+  profile:
+    usage: /<command> [player|edit]
+    aliases: [pf, profilemenu, myprofile, pfmenu]
+    description: View or edit one's profile.
+
+  language:
+    usage: /<command> [language]
+    aliases: [lang, yuyan, gengo]
+    description: Adjust your language settings.
