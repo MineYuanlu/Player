@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class Language implements CommandExecutor {
 
-	private String[] supportedLanguages = { "zh-CN", "en-GB", "en-US" };
+	public static String[] supportedLanguages = { "zh-CN", "en-GB", "en-US" };
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -38,12 +38,12 @@ public class Language implements CommandExecutor {
 						return true;
 					}
 				}
-				String languages = "";
+				StringBuilder languages = new StringBuilder();
 				for (String availableLanguage : supportedLanguages) {
-					if (languages.equals("")) {
-						languages = availableLanguage;
+					if (languages.toString().equals("")) {
+						languages = new StringBuilder(availableLanguage);
 					} else {
-						languages = languages + ", " + availableLanguage;
+						languages.append(", ").append(availableLanguage);
 					}
 				}
 				player.sendMessage(Messages.getMessage(player, "AVAILABLE_LANGUAGES") + languages);

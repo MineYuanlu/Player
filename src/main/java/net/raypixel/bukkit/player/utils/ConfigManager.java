@@ -1,22 +1,25 @@
 package net.raypixel.bukkit.player.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import net.raypixel.bukkit.player.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
 public class ConfigManager {
 
-	public static File playerDataFolder;
+	static File playerDataFolder;
 	public static Map<UUID, YamlConfiguration> playerDataMap = new HashMap<>();
-	static ConfigurationSection defaultData;
+	private static ConfigurationSection defaultData;
 	private static Map<UUID, File> playerFileMap = new HashMap<>();
 
 	public ConfigManager(File file) {
@@ -24,6 +27,7 @@ public class ConfigManager {
 		defaultData = Main.getInstance().getConfig().getConfigurationSection("default");
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public static void updateDataFile(Player player, boolean existenceCheck) {
 		File playerData = new File(playerDataFolder.getAbsolutePath(), player.getUniqueId() + ".yml");
 		if (!existenceCheck) {
@@ -112,6 +116,92 @@ public class ConfigManager {
 			playerDataMap.put(player.getUniqueId(), data);
 		}
 		return playerDataMap.get(player.getUniqueId());
+	}
+
+	public static int getLevel(int point) {
+		if (point < 0)
+			return 0;
+		if (point == 0)
+			return 0;
+		if (point < 20)
+			return 1;
+		if (point < 50)
+			return 2;
+		if (point < 100)
+			return 3;
+		if (point < 200)
+			return 4;
+		if (point < 300)
+			return 5;
+		if (point < 500)
+			return 6;
+		if (point < 750)
+			return 7;
+		if (point < 1000)
+			return 8;
+		if (point < 1300)
+			return 9;
+		if (point < 1650)
+			return 10;
+		else
+			return point / 150;
+	}
+
+	public static String getLevelString(int point) {
+		if (point < 0)
+			return ChatColor.BLACK + "ERROR_NEGATIVE_VALUE_" + point;
+		if (point == 0)
+			return ChatColor.DARK_GRAY + "" + 0;
+		if (point < 20)
+			return ChatColor.GRAY + "" + 1;
+		if (point < 50)
+			return ChatColor.DARK_PURPLE + "" + 2;
+		if (point < 100)
+			return ChatColor.LIGHT_PURPLE + "" + 3;
+		if (point < 200)
+			return ChatColor.BLUE + "" + 4;
+		if (point < 300)
+			return ChatColor.AQUA + "" + 5;
+		if (point < 500)
+			return ChatColor.DARK_AQUA + "" + 6;
+		if (point < 750)
+			return ChatColor.GREEN + "" + 7;
+		if (point < 1000)
+			return ChatColor.DARK_GREEN + "" + 8;
+		if (point < 1300)
+			return ChatColor.YELLOW + "" + 9;
+		if (point < 1650)
+			return ChatColor.GOLD + "" + 10;
+		else
+			return ChatColor.RED + "" + point / 150;
+	}
+
+	public static String getLevel(OfflinePlayer player) {
+		int point = getData(player).getInt("point");
+		if (point == 0)
+			return ChatColor.DARK_GRAY + "" + 0;
+		if (point < 20)
+			return ChatColor.GRAY + "" + 1;
+		if (point < 50)
+			return ChatColor.DARK_PURPLE + "" + 2;
+		if (point < 100)
+			return ChatColor.LIGHT_PURPLE + "" + 3;
+		if (point < 200)
+			return ChatColor.BLUE + "" + 4;
+		if (point < 300)
+			return ChatColor.AQUA + "" + 5;
+		if (point < 500)
+			return ChatColor.DARK_AQUA + "" + 6;
+		if (point < 750)
+			return ChatColor.GREEN + "" + 7;
+		if (point < 1000)
+			return ChatColor.DARK_GREEN + "" + 8;
+		if (point < 1300)
+			return ChatColor.YELLOW + "" + 9;
+		if (point < 1650)
+			return ChatColor.GOLD + "" + 10;
+		else
+			return ChatColor.RED + "" + point / 150;
 	}
 
 	public static File getDataFile(OfflinePlayer player) {

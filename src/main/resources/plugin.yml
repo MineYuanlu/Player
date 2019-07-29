@@ -16,3 +16,8 @@ commands:
     usage: /<command> [language]
     aliases: [lang, yuyan, gengo]
     description: Adjust your language settings.
+
+  experience:
+    usage: /<command> [language]
+    aliases: [exp, point]
+    description: Edit one's experience point.

@@ -19,22 +19,22 @@ import java.util.UUID;
 
 public class SkullManager {
 
-	public static ItemStack getPersonalSkull(OfflinePlayer player) {
+	public static ItemStack getPersonalSkull(OfflinePlayer player, String language) {
 		ItemStack person = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 		SkullMeta meta = (SkullMeta) person.getItemMeta();
 		meta.setDisplayName(RankManager.getRankedName(player, ConfigManager.getData(player).getString("rank")));
 		meta.setOwner(player.getName());
 		List<String> personalInfo = new ArrayList<>();
-		/* personalInfo.add(ChatColor.GRAY + "Raypixel Level: " + TODO ); */
-		personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "RANK") + ": " + RankManager.getDisplayRank(player));
-		personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "POINT") + ": " + ChatColor.AQUA + ConfigManager.getData(player).getInt("point"));
+		personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "RANK") + ": " + RankManager.getDisplayRank(player));
+		personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "LEVEL") + ": " + ConfigManager.getLevel(player));
+		personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "POINT") + ": " + ChatColor.AQUA + ConfigManager.getData(player).getInt("point"));
 		if (!ConfigManager.getData(player).getString("birth-year").equalsIgnoreCase("UNSET")) {
-			personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "AGE") + ": " + ChatColor.AQUA + (Integer.valueOf(Main.getInstance().getCurrentFormattedDate("yyyy"))
+			personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "AGE") + ": " + ChatColor.AQUA + (Integer.valueOf(Main.getInstance().getCurrentFormattedDate("yyyy"))
 					- ConfigManager.getData(player).getInt("birth-year")));
 		}
 		if (!ConfigManager.getData(player).getString("gender").equalsIgnoreCase("UNSET")) {
 			String gender = ConfigManager.getData(player).getString("gender").toUpperCase();
-			personalInfo.add(ChatColor.GRAY + Messages.getMessage(player, "GENDER") + ": " + (gender.equalsIgnoreCase("male") ? ChatColor.AQUA : ChatColor.LIGHT_PURPLE) + Messages.getMessage(player, gender));
+			personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "GENDER") + ": " + (gender.equalsIgnoreCase("male") ? ChatColor.AQUA : ChatColor.LIGHT_PURPLE) + Messages.getMessage(language, gender));
 		}
 		meta.setLore(personalInfo);
 		person.setItemMeta(meta);

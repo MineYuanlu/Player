@@ -28,6 +28,7 @@ public class ProfileManager implements CommandExecutor {
 		m = Main.getInstance();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -45,7 +46,7 @@ public class ProfileManager implements CommandExecutor {
 				player.openInventory(getInventory(player));
 
 			} else if (args.length == 1) {
-				OfflinePlayer target = Bukkit.getPlayer(args[0]);
+				OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 				if (target == null) {
 					player.sendMessage(Messages.getMessage(player, "PLAYER_NOT_FOUND").replace("%player%", args[0]));
 					return true;
@@ -61,13 +62,14 @@ public class ProfileManager implements CommandExecutor {
 	public Inventory getInventory(Player player) {
 		Inventory i = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE"));
 		setupInventory(player, i, DyeColor.CYAN);
+		i.setItem(20, getLanguageItem(player));
 		return i;
 	}
 
-	public Inventory getInventory(Player player, OfflinePlayer target) {
+	private Inventory getInventory(Player player, OfflinePlayer target) {
 		Inventory i = Bukkit.createInventory(null, 54, Messages.getMessage(player, "OTHERS_PROFILE").replace("%player%", target.getName()));
 		setupInventory(player, i, DyeColor.ORANGE);
-		i.setItem(22, SkullManager.getPersonalSkull(target));
+		i.setItem(22, SkullManager.getPersonalSkull(target, ConfigManager.getLanguageName(player)));
 		return i;
 	}
 
@@ -121,6 +123,16 @@ public class ProfileManager implements CommandExecutor {
 		return party;
 	}
 
+	private ItemStack getLanguageItem(OfflinePlayer player) {
+		ItemStack language = SkullManager.getCustomSkull(
+				"http://textures.minecraft.net/texture/b1dd4fe4a429abd665dfdb3e21321d6efa6a6b5e7b956db9c5d59c9efab25");
+		ItemMeta languageMeta = language.getItemMeta();
+		languageMeta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, "LANGUAGES"));
+		languageMeta.setLore(Collections.singletonList(Messages.getMessage(player, "CURRENT_LANGUAGE").replace("%language%", Messages.getMessage(player, "LANGUAGE")).replace("§e", "§7")));
+		language.setItemMeta(languageMeta);
+		return language;
+	}
+
 	private void setGlassPanes(Inventory i, DyeColor color) {
 		@SuppressWarnings("deprecation")
 		ItemStack glassPane = new ItemStack(Material.STAINED_GLASS_PANE, 1, color.getData());
@@ -139,7 +151,7 @@ public class ProfileManager implements CommandExecutor {
 	}
 
 	public void setupInventory(Player p, Inventory i, DyeColor c) {
-		i.setItem(2, SkullManager.getPersonalSkull(p));
+		i.setItem(2, SkullManager.getPersonalSkull(p, ConfigManager.getLanguageName(p)));
 		i.setItem(3, getAgeItem(p));
 		i.setItem(4, getGenderItem(p));
 		i.setItem(5, getFriendItem(p));

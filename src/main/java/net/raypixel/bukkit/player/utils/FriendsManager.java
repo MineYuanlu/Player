@@ -80,7 +80,7 @@ public class FriendsManager {
 	}
 
 	public List<String> getFriends(UUID uuid) {
-		return this.editor.getList("Player." + uuid.toString() + ".Friends");
+		return this.editor.getList("Player." + uuid + ".Friends");
 	}
 
 	public MySQL.Editor getEditor() {

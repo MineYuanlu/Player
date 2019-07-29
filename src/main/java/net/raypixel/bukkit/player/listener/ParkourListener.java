@@ -7,8 +7,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParkourListener implements Listener {
+
+	public static List<Player> playersInGame = new ArrayList<>();
+	
 	@EventHandler
 	public void onParkourFinish(ParkourFinishEvent event) {
 		Player player = event.getPlayer();

@@ -2,6 +2,8 @@ package net.raypixel.bukkit.player.listener;
 
 import net.raypixel.bukkit.player.Main;
 import net.raypixel.bukkit.player.Messages;
+import net.raypixel.bukkit.player.commands.Language;
+import net.raypixel.bukkit.player.events.LanguageChangeEvent;
 import net.raypixel.bukkit.player.utils.*;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class EventListener implements Listener {
@@ -48,6 +51,7 @@ public class EventListener implements Listener {
 		ConfigManager.playerDataMap.remove(player.getUniqueId());
 	}
 
+	@SuppressWarnings({"UnusedAssignment", "deprecation", "StatementWithEmptyBody"})
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if (!(event.getWhoClicked() instanceof Player)) {
@@ -63,6 +67,7 @@ public class EventListener implements Listener {
 					if (event.getSlot() == 2) {
 						player.openInventory(p.getInventory(player));
 					}
+
 					if (event.getSlot() == 3) {
 						Inventory age = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE") + " - " + Messages.getMessage(player, "AGE"));
 						p.setupInventory(player, age, DyeColor.RED);
@@ -183,7 +188,7 @@ public class EventListener implements Listener {
 
 							for (String uuid : list) {
 								OfflinePlayer target = Bukkit.getServer().getOfflinePlayer(UUID.fromString(uuid));
-								ItemStack targetSkull = SkullManager.getPersonalSkull(target);
+								ItemStack targetSkull = SkullManager.getPersonalSkull(target, ConfigManager.getLanguageName(player));
 								//TODO
 								if (target.isOnline()) {
 									online.add(targetSkull);
@@ -240,6 +245,36 @@ public class EventListener implements Listener {
 						}
 
 						player.openInventory(friendsInv);
+					}
+
+					if (event.getSlot() == 6) {
+						// TODO
+					}
+
+					if (event.getSlot() == 20 && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + Messages.getMessage(player, "LANGUAGES"))) {
+						Inventory languageInv = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE") + " - " + Messages.getMessage(player, "LANGUAGES"));
+						p.setupInventory(player, languageInv, DyeColor.RED);
+						List<ItemStack> languages = new ArrayList<>();
+						for (String language : Language.supportedLanguages) {
+							ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
+							if (language.equals("en-GB")) {
+								stack = SkullManager.getCustomSkull("http://textures.minecraft.net/texture/a9edcdd7b06173d7d221c7274c86cba35730170788bb6a1db09cc6810435b92c");
+							}
+							if (language.equals("en-US")) {
+								stack = SkullManager.getCustomSkull("http://textures.minecraft.net/texture/4cac9774da1217248532ce147f7831f67a12fdcca1cf0cb4b3848de6bc94b4");
+							}
+							if (language.equals("zh-CN")) {
+								stack = SkullManager.getCustomSkull("http://textures.minecraft.net/texture/7f9bc035cdc80f1ab5e1198f29f3ad3fdd2b42d9a69aeb64de990681800b98dc");
+							}
+							ItemMeta meta = stack.getItemMeta();
+							meta.setDisplayName(ChatColor.GREEN + Messages.getMessage(language, "LANGUAGE"));
+							stack.setItemMeta(meta);
+							languages.add(stack);
+						}
+						for (int key = 0; key < languages.size(); key++) {
+							languageInv.setItem(18 + key, languages.get(key));
+						}
+						player.openInventory(languageInv);
 					}
 				}
 			}
@@ -414,6 +449,22 @@ public class EventListener implements Listener {
 						female.setItemMeta(femaleMeta);
 						i.setItem(33, female);
 					}
+				}
+			}
+
+			if (i.getTitle().contains(Messages.getMessage(player, "LANGUAGES"))) {
+				for (String language : Language.supportedLanguages)
+				if (event.getCurrentItem().getItemMeta().getDisplayName().contains(Messages.getMessage(language, "LANGUAGE"))) {
+					String previousLanguage = ConfigManager.getLanguageName(player);
+					ConfigManager.getData(player).set("language", language);
+					try {
+						ConfigManager.getData(player).save(ConfigManager.getDataFile(player));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					Bukkit.getServer().getPluginManager().callEvent(new LanguageChangeEvent(player, previousLanguage, language));
+					player.closeInventory();
+					player.sendMessage(Messages.getMessage(player, "NEW_LANGUAGE").replace("%language%", Messages.getLanguage(player).getString("LANGUAGE")));
 				}
 			}
 		}

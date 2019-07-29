@@ -1,5 +1,6 @@
 package net.raypixel.bukkit.player;
 
+import net.raypixel.bukkit.player.commands.Experience;
 import net.raypixel.bukkit.player.commands.Language;
 import net.raypixel.bukkit.player.listener.EventListener;
 import net.raypixel.bukkit.player.listener.ParkourListener;
@@ -24,8 +25,8 @@ public class Main extends JavaPlugin {
 		return instance;
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	public void onEnable() {
-
 		instance = this;
 		logger = getLogger();
 		p = new ProfileManager();
@@ -59,7 +60,6 @@ public class Main extends JavaPlugin {
 			f = new FriendsManager(this);
 		}
 		getServer().getPluginManager().registerEvents(new EventListener(p, f), this);
-		getCommand("language").setExecutor(new Language());
 		if (Bukkit.getPluginManager().isPluginEnabled("RaypixelParkour"))
 			getServer().getPluginManager().registerEvents(new ParkourListener(), this);
 		new ConfigManager(playerDataFolder);
@@ -71,6 +71,8 @@ public class Main extends JavaPlugin {
 		}
 
 		getCommand("profile").setExecutor(p);
+		getCommand("language").setExecutor(new Language());
+		getCommand("experience").setExecutor(new Experience());
 
 		logger.info("Enabled " + getDescription().getName() + " v" + getDescription().getVersion());
 	}
