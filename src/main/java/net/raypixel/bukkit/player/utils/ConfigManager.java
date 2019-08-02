@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class ConfigManager {
 
-	static File playerDataFolder;
+	public static File playerDataFolder;
 	public static Map<UUID, YamlConfiguration> playerDataMap = new HashMap<>();
 	private static ConfigurationSection defaultData;
 	private static Map<UUID, File> playerFileMap = new HashMap<>();

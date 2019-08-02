@@ -25,6 +25,9 @@ default:
   gender: UNSET
   birth-year: UNSET
   point: 0
+  email-verified: false
+  ip:
+   - 0.0.0.0
   parkour-records:
     lobby:
     skywars:

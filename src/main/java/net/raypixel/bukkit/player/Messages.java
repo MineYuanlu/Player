@@ -29,4 +29,16 @@ public class Messages {
         return YamlConfiguration.loadConfiguration(locale);
     }
 
+    public static String translate(String text, String fromLanguage, String toLanguage) {
+        String result = "";
+        YamlConfiguration sourceYaml = YamlConfiguration.loadConfiguration(new File(Main.getInstance().getDataFolder(), fromLanguage + ".yml"));
+        YamlConfiguration targetYaml = YamlConfiguration.loadConfiguration(new File(Main.getInstance().getDataFolder(), toLanguage + ".yml"));
+        for (String key : sourceYaml.getKeys(false)) {
+            if (text.equalsIgnoreCase(sourceYaml.getString(key))) {
+                result = targetYaml.getString(key);
+            }
+        }
+        return result;
+    }
+
 }

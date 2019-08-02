@@ -63,6 +63,7 @@ public class ProfileManager implements CommandExecutor {
 		Inventory i = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE"));
 		setupInventory(player, i, DyeColor.CYAN);
 		i.setItem(20, getLanguageItem(player));
+		i.setItem(21, getStatisticItem(player));
 		return i;
 	}
 
@@ -70,6 +71,7 @@ public class ProfileManager implements CommandExecutor {
 		Inventory i = Bukkit.createInventory(null, 54, Messages.getMessage(player, "OTHERS_PROFILE").replace("%player%", target.getName()));
 		setupInventory(player, i, DyeColor.ORANGE);
 		i.setItem(22, SkullManager.getPersonalSkull(target, ConfigManager.getLanguageName(player)));
+		i.setItem(30, getStatisticItem(player));
 		return i;
 	}
 
@@ -131,6 +133,15 @@ public class ProfileManager implements CommandExecutor {
 		languageMeta.setLore(Collections.singletonList(Messages.getMessage(player, "CURRENT_LANGUAGE").replace("%language%", Messages.getMessage(player, "LANGUAGE")).replace("§e", "§7")));
 		language.setItemMeta(languageMeta);
 		return language;
+	}
+
+	private ItemStack getStatisticItem(OfflinePlayer player) {
+		ItemStack statistic = new ItemStack(Material.BREWING_STAND_ITEM, 1);
+		ItemMeta statisticMeta = statistic.getItemMeta();
+		statisticMeta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, "STATISTICS"));
+		statisticMeta.setLore(Collections.singletonList(Messages.getMessage(player, "STATISTICS_LORE")));
+		statistic.setItemMeta(statisticMeta);
+		return statistic;
 	}
 
 	private void setGlassPanes(Inventory i, DyeColor color) {

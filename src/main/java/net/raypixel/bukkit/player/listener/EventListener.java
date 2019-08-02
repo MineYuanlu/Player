@@ -276,6 +276,62 @@ public class EventListener implements Listener {
 						}
 						player.openInventory(languageInv);
 					}
+
+					if (event.getSlot() == 21 && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + Messages.getMessage(player, "STATISTICS"))) {
+						Inventory statisticInv = Bukkit.createInventory(null, 54, Messages.getMessage(player, "MY_PROFILE") + " - " + Messages.getMessage(player, "STATISTICS"));
+						p.setupInventory(player, statisticInv, DyeColor.ORANGE);
+						Set<String> games = new HashSet<>();
+						for (String key : ConfigManager.getData(player).getKeys(true)) {
+							if (key.endsWith(".wins")) {
+								games.add(key.replace(".wins", ""));
+							}
+						}
+						int slot = 18;
+						for (String game : games) {
+							ItemStack stack;
+							switch (game) {
+								case "skywars":
+									stack = new ItemStack(Material.EYE_OF_ENDER, 1);
+									break;
+								case "bedwars":
+									stack = new ItemStack(Material.BED, 1);
+									break;
+								case "thebridge":
+									stack = new ItemStack(Material.STAINED_CLAY, 1);
+									break;
+								default:
+									stack = new ItemStack(Material.WOOL, 1);
+									break;
+							}
+							ItemMeta meta = stack.getItemMeta();
+							meta.setDisplayName(ChatColor.GREEN + Messages.getMessage(player, game.toUpperCase()));
+							List<String> lore = new ArrayList<>();
+							int wins = ConfigManager.getData(player).getInt(game + ".wins");
+							Integer kills = null, deaths = null;
+							lore.add(ChatColor.WHITE + Messages.getMessage(player, "WINS") + ": " + ChatColor.GREEN + wins);
+							if (ConfigManager.getData(player).contains(game + ".kills")) {
+								kills = ConfigManager.getData(player).getInt(game + ".kills");
+								lore.add(ChatColor.WHITE + Messages.getMessage(player, "KILLS") + ": " + ChatColor.GREEN + kills);
+							}
+							if (ConfigManager.getData(player).contains(game + ".deaths")) {
+								deaths = ConfigManager.getData(player).getInt(game + ".deaths");
+								lore.add(ChatColor.WHITE + Messages.getMessage(player, "DEATHS") + ": " + ChatColor.GREEN + deaths);
+							}
+							if (kills != null && deaths != null) {
+								if (kills == 0 || deaths == 0) {
+									lore.add(ChatColor.WHITE + Messages.getMessage(player, "KDRATIO") + ": " + ChatColor.GREEN + "N/A");
+								} else {
+									float kdRatio = (float) kills / deaths;
+									lore.add(ChatColor.WHITE + Messages.getMessage(player, "KDRATIO") + ": " + ChatColor.GREEN + kdRatio);
+								}
+							}
+							meta.setLore(lore);
+							stack.setItemMeta(meta);
+							statisticInv.setItem(slot, stack);
+							slot++;
+						}
+						player.openInventory(statisticInv);
+					}
 				}
 			}
 
@@ -312,6 +368,11 @@ public class EventListener implements Listener {
 				} else if (event.getSlot() == 53) {
 					int age;
 					if (i.getItem(28).getItemMeta().getDisplayName().contains(Messages.getMessage(player, "TENS"))) {
+						if (i.getItem(29).getItemMeta().getDisplayName().contains(Messages.getMessage(player, "ONES"))) {
+							player.sendMessage(Messages.getMessage(player, "VALUE_NOT_GIVEN"));
+							player.closeInventory();
+							return;
+						}
 						String itemName = i.getItem(29).getItemMeta().getDisplayName();
 						age = Character.getNumericValue(itemName.charAt(itemName.length() - 1));
 					} else {

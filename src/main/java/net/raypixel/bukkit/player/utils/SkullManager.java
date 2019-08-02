@@ -36,6 +36,7 @@ public class SkullManager {
 			String gender = ConfigManager.getData(player).getString("gender").toUpperCase();
 			personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "GENDER") + ": " + (gender.equalsIgnoreCase("male") ? ChatColor.AQUA : ChatColor.LIGHT_PURPLE) + Messages.getMessage(language, gender));
 		}
+		personalInfo.add(ChatColor.GRAY + Messages.getMessage(language, "LANGUAGE_STRING") + ": " + ChatColor.AQUA + Messages.getMessage(language, ConfigManager.getData(player).getString("language")));
 		meta.setLore(personalInfo);
 		person.setItemMeta(meta);
 		return person;
