@@ -85,7 +85,7 @@ public class ProfileManager implements CommandExecutor {
 						ConfigManager.getData(player).getString("birth-year")
 								.equalsIgnoreCase("UNSET")
 										? Messages.getMessage(player, "AGE_NOT_TOLD")
-										: ChatColor.GRAY + Messages.getMessage(player, "AGE_LORE").replace("%age%", "" + (Integer.valueOf(m.getCurrentFormattedDate("yyyy"))
+										: ChatColor.GRAY + Messages.getMessage(player, "AGE_LORE").replace("%age%", "" + (Integer.parseInt(m.getCurrentFormattedDate("yyyy"))
 														- ConfigManager.getData(player).getInt("birth-year")))));
 		age.setItemMeta(ageMeta);
 		return age;
@@ -331,7 +331,7 @@ public class ProfileManager implements CommandExecutor {
 	}
 	
 	public static void setAge(Player player, int age) {
-		int birthYear = Integer.valueOf(Main.getInstance().getCurrentFormattedDate("yyyy")) - age;
+		int birthYear = Integer.parseInt(Main.getInstance().getCurrentFormattedDate("yyyy")) - age;
 		ConfigManager.getData(player).set("birth-year", birthYear);
 		try {
 			ConfigManager.getData(player).save(ConfigManager.getDataFile(player));

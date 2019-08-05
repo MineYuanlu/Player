@@ -44,7 +44,7 @@ public class RankManager {
 			return CU.t("&7MEMBER");
 	}
 
-	static String getRankedName(OfflinePlayer player, String rank) {
+	public static String getRankedName(OfflinePlayer player, String rank) {
 		String rankedName;
 		if (rank.equalsIgnoreCase("owner")) {
 			rankedName = ChatColor.RED + "[OWNER] " + ChatColor.RED + player.getName() + ChatColor.WHITE + "";
@@ -76,6 +76,43 @@ public class RankManager {
 			rankedName = ChatColor.GRAY + player.getName();
 		} else {
 			rankedName = ChatColor.GRAY + "[" + rank.toUpperCase() + "] " + player.getName();
+		}
+		return rankedName;
+	}
+
+	public static String getRankedName(UUID uuid, String rank) {
+		String rankedName;
+		String name = ConfigManager.getData(uuid).getString("name");
+		if (rank.equalsIgnoreCase("owner")) {
+			rankedName = ChatColor.RED + "[OWNER] " + ChatColor.RED + name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("admin")) {
+			rankedName = ChatColor.RED + "[ADMIN] " + ChatColor.RED + name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("mod")) {
+			rankedName = ChatColor.DARK_GREEN + "[MOD] " + ChatColor.DARK_GREEN + name + ChatColor.WHITE
+					+ "";
+		} else if (rank.equalsIgnoreCase("up")) {
+			rankedName = ChatColor.RED + "[" + ChatColor.WHITE + "UP" + ChatColor.RED + "] " + ChatColor.RED
+					+ name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("mvpplusplus") || rank.equalsIgnoreCase("mvp++")) {
+			rankedName = ChatColor.GOLD + "[MVP" + ChatColor.RED + "++" + ChatColor.GOLD + "] " + ChatColor.GOLD
+					+ name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("mvpplus") || rank.equalsIgnoreCase("mvp+")) {
+			rankedName = ChatColor.AQUA + "[MVP" + ChatColor.RED + "+" + ChatColor.AQUA + "] " + ChatColor.AQUA
+					+ name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("mvp")) {
+			rankedName = ChatColor.AQUA + "[MVP] " + ChatColor.AQUA + name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("vipplus") || rank.equalsIgnoreCase("vip+")) {
+			rankedName = ChatColor.GREEN + "[VIP" + ChatColor.GOLD + "+" + ChatColor.GREEN + "] " + ChatColor.GREEN
+					+ name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("vip")) {
+			rankedName = ChatColor.GREEN + "[VIP] " + ChatColor.GREEN + name + ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("hacker")) {
+			rankedName = ChatColor.DARK_PURPLE + "[HACKER] " + ChatColor.DARK_PURPLE + name + ""
+					+ ChatColor.WHITE + "";
+		} else if (rank.equalsIgnoreCase("member")) {
+			rankedName = ChatColor.GRAY + name;
+		} else {
+			rankedName = ChatColor.GRAY + "[" + rank.toUpperCase() + "] " + name;
 		}
 		return rankedName;
 	}

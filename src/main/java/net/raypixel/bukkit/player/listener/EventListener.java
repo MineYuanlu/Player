@@ -322,7 +322,7 @@ public class EventListener implements Listener {
 									lore.add(ChatColor.WHITE + Messages.getMessage(player, "KDRATIO") + ": " + ChatColor.GREEN + "N/A");
 								} else {
 									float kdRatio = (float) kills / deaths;
-									lore.add(ChatColor.WHITE + Messages.getMessage(player, "KDRATIO") + ": " + ChatColor.GREEN + kdRatio);
+									lore.add(ChatColor.WHITE + Messages.getMessage(player, "KDRATIO") + ": " + ChatColor.GREEN + (("" + kdRatio).length() > 4 ? ("" + kdRatio).substring(0, 4) : (("" + kdRatio).length() < 4 ? kdRatio + "0" : kdRatio)));
 								}
 							}
 							meta.setLore(lore);

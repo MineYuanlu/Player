@@ -118,6 +118,15 @@ public class ConfigManager {
 		return playerDataMap.get(player.getUniqueId());
 	}
 
+	public static YamlConfiguration getData(UUID uuid) {
+		if (!playerDataMap.containsKey(uuid)) {
+			YamlConfiguration data = YamlConfiguration
+					.loadConfiguration(new File(getDataFolder().getAbsolutePath(), uuid + ".yml"));
+			playerDataMap.put(uuid, data);
+		}
+		return playerDataMap.get(uuid);
+	}
+
 	public static int getLevel(int point) {
 		if (point < 0)
 			return 0;
@@ -210,6 +219,14 @@ public class ConfigManager {
 			playerFileMap.put(player.getUniqueId(), playerDataFile);
 		}
 		return playerFileMap.get(player.getUniqueId());
+	}
+
+	public static File getDataFile(UUID uuid) {
+		if (!playerFileMap.containsKey(uuid)) {
+			File playerDataFile = new File(getDataFolder().getAbsolutePath(), uuid + ".yml");
+			playerFileMap.put(uuid, playerDataFile);
+		}
+		return playerFileMap.get(uuid);
 	}
 
 	public static File getDataFolder() {
