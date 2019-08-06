@@ -35,3 +35,8 @@ default:
     wins: 0
     kills: 0
     deaths: 0
+  bedwars:
+    wins: 0
+    kills: 0
+    deaths: 0
+    beds-broken: 0
